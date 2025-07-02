@@ -39,11 +39,42 @@ interface Dict<T> {
 }
 
 // Array.prototype.map, but for Dict
-function mapDict(...args: any[]): any {}
+function mapDict<T, U>(
+  inputDict: Dict<T>,
+  callback: (original: T, name: string) => U,
+): Dict<U> {
+  const mappedObj: Dict<U>
+  for (let [name, fruit] of Object.entries(inputDict)) {
+    mappedObj[name] = callback(fruit, name)
+  }
+  return mappedObj
+}
 // Array.prototype.filter, but for Dict
-function filterDict(...args: any[]): any {}
+function filterDict<T>(
+  inputDict: Dict<T>,
+  callback: (value: T) => boolean,
+): Dict<T> {
+  let newDict: Dict<T> = {}
+  for (let [key, value] of Object.entries(inputDict)) {
+    if (callback(value)) {
+      newDict[key] = value
+    }
+  }
+  return newDict
+}
+
 // Array.prototype.reduce, but for Dict
-function reduceDict(...args: any[]): any {}
+function reduceDict<T, U>(
+  inputDict: Dict<T>,
+  callback: (acc: U, curr: T) => U,
+  initialValue: U,
+): U {
+  let value = initialValue
+  for (let dictVal of Object.values(inputDict)) {
+    value = callback(value, dictVal)
+  }
+  return value
+}
 
 /////////////////////////////////////////
 ///////////// TEST SUITE ///////////////

@@ -11,8 +11,7 @@
     "packages/*"
   ],
   "volta": {
-    "node": "18.18.2",
-    "yarn": "3.6.4"
+    "node": "18.18.2"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
@@ -23,19 +22,19 @@
   },
   "scripts": {
     "postinstall": "replace-in-file 'import chalk' 'import * as chalk' node_modules/gatsby-cli/lib/reporter/reporter.d.ts",
-    "dev-website": "yarn workspace website dev",
-    "dev-chat": "yarn workspace chat dev",
-    "dev-hello-ts": "yarn workspace hello-ts dev",
-    "dev-welcome-to-ts": "yarn workspace welcome-to-ts dev",
-    "build": "yarn workspaces foreach -vpi run build",
-    "lint-local-md": "yarn markdownlint README.md",
-    "lint-local": "yarn lint-local-md",
-    "lint": "yarn lint-local && yarn workspaces foreach -vpi run lint",
-    "typecheck": "yarn workspaces foreach -vpi run typecheck",
-    "test": "yarn test-jest && yarn test-tsd && yarn test-dtslint",
-    "test-jest": "yarn workspaces foreach -vpi run test-jest",
-    "test-tsd": "yarn workspaces foreach -vpi run test-tsd",
-    "test-dtslint": "yarn workspaces foreach -vpi run test-dtslint"
+    "dev-website": "pnpm --filter website dev",
+    "dev-chat": "pnpm --filter chat dev",
+    "dev-hello-ts": "pnpm --filter hello-ts dev",
+    "dev-welcome-to-ts": "pnpm --filter welcome-to-ts dev",
+    "build": "pnpm -r run build",
+    "lint-local-md": "pnpm markdownlint README.md",
+    "lint-local": "pnpm run lint-local-md",
+    "lint": "pnpm run lint-local && pnpm workspaces -r run lint",
+    "typecheck": "pnpm workspaces -r run typecheck",
+    "test": "pnpm run test-jest && pnpm run test-tsd && pnpm run test-dtslint",
+    "test-jest": "pnpm -r run test-jest",
+    "test-tsd": "pnpm -r run test-tsd",
+    "test-dtslint": "pnpm -r run test-dtslint"
   },
   "resolutions": {
     "@types/eslint": "8.44.3",
