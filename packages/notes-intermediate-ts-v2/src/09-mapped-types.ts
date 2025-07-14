@@ -25,13 +25,13 @@ fruitCatalog.apple
 
 //* Record
 /*
-// type AnyPossibleKey = keyof any
-// // type MyRecord<K extends keyof any, V> = { [Key in K]: V }
+*/
+type AnyPossibleKey = keyof any
+type MyRecord<K extends keyof any, V> = { [Key in K]: V }
 
-// //
-// // type Record<K extends keyof any, T> = {
-// //   [P in K]: T
-// // }
+type Record<K extends keyof any, T> = {
+  [P in K]: T
+}
 
 //* Use with indexed access types
 /*
@@ -89,52 +89,55 @@ fruitCatalog.apple
 
 //* Template literal types
 /*
-// type ArtFeatures = 'cabin' | 'tree' | 'sunset'
-// type Colors =
-//   | 'darkSienna'
-//   | 'sapGreen'
-//   | 'titaniumWhite'
-//   | 'prussianBlue'
+*/
+type ArtFeatures = 'cabin' | 'tree' | 'sunset'
+type Colors =
+  | 'darkSienna'
+  | 'sapGreen'
+  | 'titaniumWhite'
+  | 'prussianBlue'
 
-// type ArtMethodNames = `paint_${Colors}_${ArtFeatures}`
+type ArtMethodNames = `paint_${Colors}_${ArtFeatures}`
 
-/*
-// type ArtMethodNames =
-//   `paint${Capitalize<Colors>}${Capitalize<ArtFeatures>}`
-
-/*
-// interface DataState {
-//   digits: number[]
-//   names: string[]
-//   flags: Record<'darkMode' | 'mobile', boolean>
-// }
-
-// type DataSDK = {
-//   // The mapped type
-//   [K in keyof DataState as `set${Capitalize<K>}`]: (
-//     arg: DataState[K],
-//   ) => void
-// }
-
-// function load(dataSDK: DataSDK) {
-//   dataSDK.setDigits([14])
-//   dataSDK.setFlags({ darkMode: true, mobile: false })
-// }
+type ArtMethodNames =
+  `paint${Capitalize<Colors>}${Capitalize<ArtFeatures>}`
 
 /*
-// //? Extracting string literal types
+ */
+interface DataState {
+  digits: number[]
+  names: string[]
+  flags: Record<'darkMode' | 'mobile', boolean>
+}
 
-// const courseWebsite = 'Frontend Masters'
+type DataSDK = {
+  // The mapped type
+  [K in keyof DataState as `set${Capitalize<K>}`]: (
+    arg: DataState[K],
+  ) => void
+}
 
-// type ExtractMasterName<S> = S extends `${infer T} Masters` ? T : never
-// let fe: ExtractMasterName<typeof courseWebsite> = 'Backend'
+function load(dataSDK: DataSDK) {
+  dataSDK.setDigits([14])
+  dataSDK.setFlags({ darkMode: true, mobile: false })
+}
 
+/*
+*/
+//? Extracting string literal types
+
+const courseWebsite = 'Frontend Masters'
+
+type ExtractMasterName<S> = S extends `${infer T} Masters` ? T : never
+let fe: ExtractMasterName<typeof courseWebsite> = 'Backend'
+
+*/
 //* Filtering properties out
-/*
-// type DocKeys = Extract<keyof Document, `query${string}`>
-// type KeyFilteredDoc = {
-//   [K in DocKeys]: Document[K]
-// }
+
+type DocKeys = Extract<keyof Document, `query${string}`>
+type KeyFilteredDoc = {
+  [K in DocKeys]: Document[K]
+}
 
 //? The flawed approach
 /*
@@ -147,9 +150,10 @@ fruitCatalog.apple
 //     : never
 // }
 
-// function load2(doc: ValueFilteredDoc) {
-//   doc.querySelector('input') //! a lot of nevers!
-// }
+*/
+function load2(doc: KeyFilteredDoc) {
+  doc.querySelector('input') //! a lot of nevers!
+}
 
 /*
 // //? A better approach - filter keys first
@@ -164,6 +168,38 @@ fruitCatalog.apple
 // >
 
 // // type ValueFilteredDoc = Pick<Document, RelevantDocumentKeys>
+
+*/
+
+/* Mine
+type Thang = {
+  id: string;
+  uuh: number;
+};
+
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+
+type uhuh = Pick<Thang, 'uuh'>;
+
+type PickStrings<T> = {
+  [K in keyof T as T[K] extends string ? K : never]: T[K];
+};
+
+type yuh = PickStrings<Thang>;
+
+type PickType<T, I> = {
+  [K in keyof T as T[K] extends I ? K : never]: T[K];
+};
+
+type newObj = PickType<Thang, boolean>;
+
+type Omit<T, K extends keyof T> = {
+  [P in keyof T as P extends K ? never : P]: T[P];
+};
+
+type OmitIt = Omit<Thang, 'id'>;
 
 /**/
 export default {}
